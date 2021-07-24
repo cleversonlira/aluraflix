@@ -26,30 +26,33 @@ public class VideoController {
 	@Autowired
 	private VideoRepository videoRepository;
 	
-	@GetMapping
+	@GetMapping //GetAll
 	public List<Video> list() {
 		return this.videoRepository.findAll();
 		//return Arrays.asList(new Video());
 	}
 	
-	@GetMapping("/{id}")
+	@GetMapping("/{id}") //GetById
 	public Video detail(@PathVariable Long id) {
 		return this.videoRepository.findById(id).get();
 	}
 
-	@PostMapping
-	@Transactional
+	@PostMapping //Insert
+	@Transactional 
 	public void post(@Valid @RequestBody Video video) {		
 		this.videoRepository.save(video);
 	}
 
-	@PutMapping("/{id}")
+	@PutMapping("/{id}") //UpdateById
 	@Transactional
 	public void put(@PathVariable Long id, @Valid @RequestBody Video video) {
-		this.videoRepository.findById(id).get();		
+		Video searchedVideo = this.videoRepository.findById(id).get();
+		searchedVideo.setTitulo(video.getTitulo());
+		searchedVideo.setDescricao(video.getDescricao());
+		searchedVideo.setUrl(video.getUrl());
 	}
 
-	@DeleteMapping("/{id}")
+	@DeleteMapping("/{id}") //DeleteById
 	@Transactional
 	public void remove(@PathVariable Long id) {
 		this.videoRepository.deleteById(id);
