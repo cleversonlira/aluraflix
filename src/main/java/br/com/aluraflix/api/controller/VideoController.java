@@ -67,7 +67,7 @@ public class VideoController {
 
 	@DeleteMapping("/{id}") //DeleteById
 	@Transactional
-	public ResponseEntity<?> remove(@PathVariable Long id) {
+	public ResponseEntity<Video> remove(@PathVariable Long id) {
 		
 		if (this.videoRepository.findById(id).isPresent()) {
 			this.videoRepository.deleteById(id);
