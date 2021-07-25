@@ -1,12 +1,14 @@
 package br.com.aluraflix.api.controller;
 
-import java.util.Arrays;
+import java.net.URI;
 import java.util.List;
+import java.util.Optional;
 
 import javax.transaction.Transactional;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -15,6 +17,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import br.com.aluraflix.api.model.Video;
 import br.com.aluraflix.api.repository.VideoRepository;
@@ -29,33 +32,48 @@ public class VideoController {
 	@GetMapping //GetAll
 	public List<Video> list() {
 		return this.videoRepository.findAll();
-		//return Arrays.asList(new Video());
 	}
 	
 	@GetMapping("/{id}") //GetById
-	public Video detail(@PathVariable Long id) {
-		return this.videoRepository.findById(id).get();
+	public ResponseEntity<Video> detail(@PathVariable Long id) {
+		Optional<Video> video = this.videoRepository.findById(id);
+		if (video.isPresent()) {
+			return ResponseEntity.ok(video.get());
+		}
+		return ResponseEntity.notFound().build();
 	}
 
 	@PostMapping //Insert
 	@Transactional 
-	public void post(@Valid @RequestBody Video video) {		
+	public ResponseEntity<Video> post( @RequestBody @Valid Video video, UriComponentsBuilder uriBuilder) {		
 		this.videoRepository.save(video);
+		URI uri = uriBuilder.path("/topicos/{id}").buildAndExpand(video.getId()).toUri();
+		return ResponseEntity.created(uri).body(video);
 	}
 
 	@PutMapping("/{id}") //UpdateById
 	@Transactional
-	public void put(@PathVariable Long id, @Valid @RequestBody Video video) {
-		Video searchedVideo = this.videoRepository.findById(id).get();
-		searchedVideo.setTitulo(video.getTitulo());
-		searchedVideo.setDescricao(video.getDescricao());
-		searchedVideo.setUrl(video.getUrl());
+	public ResponseEntity<Video> put(@PathVariable Long id, @RequestBody @Valid Video video) {
+		Optional<Video> videoOptional = this.videoRepository.findById(id);
+		if (videoOptional.isPresent()) {
+			Video videoFound = videoOptional.get();
+			videoFound.setTitulo(video.getTitulo());
+			videoFound.setDescricao(video.getDescricao());
+			videoFound.setUrl(video.getUrl());
+			return ResponseEntity.ok(videoFound);
+		}
+		return ResponseEntity.notFound().build();
 	}
 
 	@DeleteMapping("/{id}") //DeleteById
 	@Transactional
-	public void remove(@PathVariable Long id) {
-		this.videoRepository.deleteById(id);
+	public ResponseEntity<?> remove(@PathVariable Long id) {
+		
+		if (this.videoRepository.findById(id).isPresent()) {
+			this.videoRepository.deleteById(id);
+			return ResponseEntity.ok().build();
+		}
+		return ResponseEntity.notFound().build();
 	}
 
 }

@@ -7,15 +7,18 @@ import javax.persistence.Id;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
+import org.hibernate.validator.constraints.Length;
+
 @Entity
 public class Video {
 
 	@Id @GeneratedValue(strategy = GenerationType.IDENTITY)
 	Long id;
-	@NotNull @NotEmpty
+	@NotNull @NotEmpty @Length(min = 5)
 	String titulo;
-	@NotNull @NotEmpty
+	@NotNull @NotEmpty @Length(min = 5)
 	String descricao;
+	@NotNull @NotEmpty @Length(min = 5)
 	String url;
 	
 	
