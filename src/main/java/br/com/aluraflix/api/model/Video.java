@@ -4,6 +4,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
@@ -13,13 +14,15 @@ import org.hibernate.validator.constraints.Length;
 public class Video {
 
 	@Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-	Long id;
+	private Long id;
 	@NotNull @NotEmpty @Length(min = 5)
-	String titulo;
+	private String titulo;
 	@NotNull @NotEmpty @Length(min = 5)
-	String descricao;
+	private String descricao;
 	@NotNull @NotEmpty @Length(min = 5)
-	String url;
+	private String url;
+	@ManyToOne
+	private Categoria categoria;
 	
 	
 	
@@ -79,5 +82,12 @@ public class Video {
 	public void setUrl(String url) {
 		this.url = url;
 	}
-	
+
+	public Categoria getCategoria() {
+		return categoria;
+	}
+
+	public void setCategoria(Categoria categoria) {
+		this.categoria = categoria;
+	}
 }

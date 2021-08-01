@@ -6,4 +6,6 @@ import br.com.aluraflix.api.model.Video;
 
 public interface VideoRepository extends JpaRepository<Video, Long> {
 	
+	public Video findByTituloIsContaining(String titulo);
+	
 }
