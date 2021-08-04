@@ -19,8 +19,6 @@ public class VideoDTO {
 		this.descricao = video.getDescricao();
 		this.url = video.getUrl();
 		this.categoriaId = video.getCategoria().getId();
-		System.out.println("Construiu VideoDTO");
-		System.out.println(video.getCategoria().getId());
 	}
 
 	public Long getId() {

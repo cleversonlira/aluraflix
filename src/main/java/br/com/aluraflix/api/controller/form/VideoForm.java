@@ -35,12 +35,16 @@ public class VideoForm {
 		this.categoriaId = categoriaTitulo;
 	}
 	
-	public Video converter(VideoForm videoForm, CategoriaRepository repository) {
+	public Video converter(CategoriaRepository repository) {
 		Video video = new Video();
 		video.setTitulo(this.titulo);
 		video.setDescricao(this.descricao);
 		video.setUrl(this.url);		
-		video.setCategoria(repository.findById(this.categoriaId).get());
+		video.setCategoria(
+				this.categoriaId != null
+				? repository.findById(this.categoriaId).get()
+				: repository.findById(1L).get()		
+		);
 		return video;
 	}
 }

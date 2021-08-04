@@ -12,7 +12,6 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 @RestControllerAdvice
 public class ValidationErrorHandler {
@@ -33,5 +32,18 @@ public class ValidationErrorHandler {
 		});
 		return errors;
 	}
+	
+	/*
+	 * @ResponseStatus(code = HttpStatus.NO_CONTENT)
+	 * 
+	 * @ExceptionHandler(NullPointerException.class) public List<Error>
+	 * handle(NullPointerException exception) {
+	 * System.out.println("\n\nEntrou no handle \n\n"); List<Error> errors = new
+	 * ArrayList<>(); List<FieldError> fieldErrors = exception.;
+	 * 
+	 * fieldErrors.forEach(error -> { String mensagem =
+	 * messageSource.getMessage(error, LocaleContextHolder.getLocale());
+	 * errors.add(new Error(error.getField(), mensagem)); }); return errors; }
+	 */
 	
 }
