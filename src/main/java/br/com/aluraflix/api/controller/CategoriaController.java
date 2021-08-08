@@ -24,6 +24,7 @@ import br.com.aluraflix.api.controller.dto.VideoDTO;
 import br.com.aluraflix.api.controller.form.CategoriaForm;
 import br.com.aluraflix.api.model.Categoria;
 import br.com.aluraflix.api.repository.CategoriaRepository;
+import br.com.aluraflix.api.repository.VideoRepository;
 
 
 @RestController
@@ -32,6 +33,9 @@ public class CategoriaController {
 
 	@Autowired
 	CategoriaRepository categoriaRepository; 
+	
+	@Autowired
+	VideoRepository videoRepository;
 	
 	@GetMapping
 	public List<CategoriaDTO> list() {
@@ -70,6 +74,12 @@ public class CategoriaController {
 			return ResponseEntity.ok().build();
 		}
 		return ResponseEntity.notFound().build();
+	}
+	
+	@GetMapping("/{id}/videos/") //GetById
+	public List<VideoDTO> getVideosByCategoria(@PathVariable Long id) {
+		System.out.println("Passou pelo getVideosByCategoria");
+		return VideoDTO.converter(this.videoRepository.findAllByCategoriaId(id));		
 	}
 	
 }

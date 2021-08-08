@@ -22,7 +22,6 @@ public class ValidationErrorHandler {
 	@ResponseStatus(code = HttpStatus.BAD_REQUEST)
 	@ExceptionHandler(MethodArgumentNotValidException.class)	
 	public List<Error> handle(MethodArgumentNotValidException exception) {
-		System.out.println("\n\nEntrou no handle \n\n");
 		List<Error> errors = new ArrayList<>();
 		List<FieldError> fieldErrors = exception.getBindingResult().getFieldErrors();
 		
@@ -32,18 +31,4 @@ public class ValidationErrorHandler {
 		});
 		return errors;
 	}
-	
-	/*
-	 * @ResponseStatus(code = HttpStatus.NO_CONTENT)
-	 * 
-	 * @ExceptionHandler(NullPointerException.class) public List<Error>
-	 * handle(NullPointerException exception) {
-	 * System.out.println("\n\nEntrou no handle \n\n"); List<Error> errors = new
-	 * ArrayList<>(); List<FieldError> fieldErrors = exception.;
-	 * 
-	 * fieldErrors.forEach(error -> { String mensagem =
-	 * messageSource.getMessage(error, LocaleContextHolder.getLocale());
-	 * errors.add(new Error(error.getField(), mensagem)); }); return errors; }
-	 */
-	
 }
